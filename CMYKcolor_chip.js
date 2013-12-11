@@ -9,62 +9,67 @@
 数値が併記されたCMYKカラーチップが展開されます。
 それをお使いのプリンターで出力し、お使い下さい。
 */
+var i = 6; //チップの分割数
+var h = i-1 ; //繰り返し用
 
 var docObj = documents.add(DocumentColorSpace.CMYK,500,500);
-var nam  = 10;
+
 var array;
-var i = 0;//m
-var j = 0;//c
-var k = 0;//y
-var l = 0;//k
+var m = 0;//m マゼンタ
+var c = 0;//c シアン
+var y = 0;//y イエロー
+var k = 0;//k ブラック
 
-for(i=0;k<=nam;k++){
-for(i=0;i<=nam;i++){
-	for(j=1;j<=nam;j++){
-		var pObj = docObj.pathItems.add();
-		pObj.filled = false;
-		pObj.stroked = true;
-		pObj.strokeWidth = 25;
-		
-		pObj.strokeColor.cyan = j*nam;
-		pObj.strokeColor.magenta = i*nam;
-		pObj.strokeColor.yellow = 0;
-		pObj.strokeColor.black = 0;
+for(k=0;k<=h;k++){
+for(y=0;y<=h;y++){
+for(m=0;m<=h;m++){
+        for(c=0;c<=h;c++){
+                var pObj = docObj.pathItems.add();　//線の指定
+                pObj.filled = false;
+                pObj.stroked = true;
+                pObj.strokeWidth = 25;
+                
+                pObj.strokeColor.cyan = c*100/h;
+                pObj.strokeColor.magenta = m*100/h;
+                pObj.strokeColor.yellow = y*100/h;
+                pObj.strokeColor.black = k*100/h;
+				
+				//始点
+                var pt = pObj.pathPoints.add();
+                pt.leftDirection = [25+(c*50)+((k)*50*i),0-(50*m)-(y*50*i)];
+                pt.anchor = [25+(c*50)+(k*50*i),0-(50*m)-(y*50*i)];
+                pt.rightDirection = [25+(c*50)+(k*50*i),0-(50*m)-(y*50*i)];
+                //終点
+				var pt = pObj.pathPoints.add();
+                pt.leftDirection = [25+(c*50)+(k*50*i),25-(50*m)-(y*50*i)];
+                pt.anchor = [25+(c*50)+(k*50*i),25-(50*m)-(y*50*i)];
+                pt.rightDirection = [25+(c*50)+(k*50*i),25-(50*m)-(y*50*i)];
+				
+//テキストの指定ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+                var textObj = docObj.textFrames.add();　
+                textObj.contents = "C:"+c*100/h;
+                textObj.textRange.size = 5;
+                textObj.orientation = TextOrientation.HORIZONTAL;                
+                textObj.translate(0+(c*50)+(k*50*i),0-(50*m)+18-(y*50*i));
+                var textObj = docObj.textFrames.add();
+                textObj.contents = "M:"+m*100/h;
+                textObj.textRange.size = 5;
+                textObj.orientation = TextOrientation.HORIZONTAL;                
+                textObj.translate(0+(c*50)+(k*50*i),0-(50*m)+12-(y*50*i));
 
-		
-		var pt = pObj.pathPoints.add();
-		pt.leftDirection = [25+(j*50),0-(50*i)];
-		pt.anchor = [25+(j*50),0-(50*i)];
-		pt.rightDirection = [25+(j*50),0-(50*i)];
-		var pt = pObj.pathPoints.add();
-		pt.leftDirection = [25+(j*50),25-(50*i)];
-		pt.anchor = [25+(j*50),25-(50*i)];
-		pt.rightDirection = [25+(j*50),25-(50*i)];
+                var textObj = docObj.textFrames.add();
+                textObj.contents = "Y:"+y*100/h;
+                textObj.textRange.size = 5;
+                textObj.orientation = TextOrientation.HORIZONTAL;                
+                textObj.translate(0+(c*50)+(k*50*i),0-(50*m)+6-(y*50*i));
 
-		var textObj = docObj.textFrames.add();
-		textObj.contents = "C:"+j*nam;
-		textObj.textRange.size = 5;
-		textObj.orientation = TextOrientation.HORIZONTAL;		
-		textObj.translate(0+(j*50),0-(50*i)+18);
-		var textObj = docObj.textFrames.add();
-		textObj.contents = "M:"+i*nam;
-		textObj.textRange.size = 5;
-		textObj.orientation = TextOrientation.HORIZONTAL;		
-		textObj.translate(0+(j*50),0-(50*i)+12);
-
-		var textObj = docObj.textFrames.add();
-		textObj.contents = "Y:"+k*nam;
-		textObj.textRange.size = 5;
-		textObj.orientation = TextOrientation.HORIZONTAL;		
-		textObj.translate(0+(j*50),0-(50*i)+6);
-
-		var textObj = docObj.textFrames.add();
-		textObj.contents = "K:"+l*nam;
-		textObj.textRange.size = 5;
-		textObj.orientation = TextOrientation.HORIZONTAL;		
-		textObj.translate(0+(j*50),0-(50*i));
-
-
-		}
+                var textObj = docObj.textFrames.add();
+                textObj.contents = "K:"+k*100/h;
+                textObj.textRange.size = 5;
+                textObj.orientation = TextOrientation.HORIZONTAL;                
+                textObj.translate(0+(c*50)+(k*50*i),0-(50*m)-(y*50*i));
+//テキストの指定ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+				}
+                }
 }
 }
